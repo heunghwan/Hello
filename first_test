@@ -1,0 +1,76 @@
+import random
+import turtle
+
+# 주사위 빈도를 표현하기 위한 리스트
+freq_list = [0,0,0,0,0,0]
+
+# 막대의 색을 표현하는 리스트
+color_list = ['red','orange', 'yellow', 'green', 'blue', 'navy', 'purple']
+
+# 주사위 던지는 회수
+N = 120
+
+# 주사위의 면수를 나타내는 변수
+face = 6
+
+# 주사위 모사게임의 결과를 turtle 그래픽을 사용해서 보여주는 함수
+def draw_histogram_using_turtle() :
+    t = turtle.Turtle()
+    t.shape('triangle')
+    t.pensize(5)
+    t.up()
+    y_cor = 300
+
+    for i in range(1,face+1) :
+        # 막대의 타이틀
+        title = str(i) + '의 빈도 : '
+
+        # 빈도 수의 추출과 문자열로 만들어 놓는다
+        freq = freq_list[i-1]
+        text = '     ' + str(freq)
+
+        # 그려질 처음의 위치를 계산해서 이동한다.
+        y_pos = y_cor - i*40
+        t.goto(-400, y_pos)
+
+        # 막대의 타이틀을 쓰고 그 정도의 크기만큼 이동한다.
+        t.write(title, font=('arial',8, 'bold'))
+        t.fd(60)
+
+        # 펜을 내려 그리기 준비한다
+        t.down()
+
+        # 막대의 색을 각각 다르게 해보자
+        t.color(color_list[i-1])
+
+        # 빈도에 비례해서 막대를 그려 보자
+        t.fd(freq*10)
+        
+        t.up()
+        # 막대의 색을 원위치
+        t.color('black')
+
+        # 빈도의 크기별로 텍스트의 크기를 조절해 보자
+        t_size = freq//2
+        t.write(text, font=('arial',t_size, 'bold'))
+
+    # turtle을 숨긴다
+    t.ht()
+
+# 난수를 사용해서 주사위 던지기를 모사해서 빈도리스트에 저장
+for i in range(1,N+1) :
+    tmp = random.randint(1,face)
+    freq_list[tmp-1] +=1
+    
+# 제대로 동작하는 지를 확인하기 출력해 본다.
+for i in range(1,face+1) :
+    print('number of %d = ' %i, freq_list[i-1])
+
+for i in range(1,face+1) :
+    print("%d의 빈도 : " %(i), end='')
+    print('*'*freq_list[i-1], end='   ')
+    print(freq_list[i-1])
+
+# 결과를 turtle 그래픽을 사용해서 그려준다
+draw_histogram_using_turtle()
+
